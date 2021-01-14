@@ -1,0 +1,17 @@
+.disk{
+  margin-top: 20px;
+  width: 1140px;
+  &__btns{
+    display: flex;
+    align-items: center;
+    height: 50px;
+    .anticon {
+      font-size: 32px;
+      &:hover{
+        transform: scale(1.3);
+      }
+    }
+
+  }
+}
+

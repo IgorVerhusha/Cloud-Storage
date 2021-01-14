@@ -1,9 +1,10 @@
 import React from 'react';
 import {Input, Button, Form, Modal} from "antd";
-import './registration.scss'
+import './auth.scss'
 import 'antd/dist/antd.css';
 import {IdcardTwoTone} from '@ant-design/icons';
-import {registration} from "../../actions/user.js";
+import {registration} from "../../Redux/actions/user.js";
+import {useDispatch} from "react-redux";
 
 const layout = {
     wrapperCol: {
@@ -19,18 +20,18 @@ const tailLayout = {
 
 
 const Registration = () => {
-
+    const dispatch = useDispatch()
     const onFinish = (values) => {
         if (values.password !== values.repeatPassword) return Modal.error({
             title: 'Ошибка!',
             content: 'Пароли должны совпадать!',
         });
-        registration(values.email, values.password)
+       dispatch(registration(values.email, values.password))
     };
 
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
+    // const onFinishFailed = (errorInfo) => {
+    //     console.log('Failed:', errorInfo);
+    // };
 
 
     return (
@@ -46,7 +47,7 @@ const Registration = () => {
                     remember: true,
                 }}
                 onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
+               // onFinishFailed={onFinishFailed}
             >
                 <Form.Item
                     name="email"

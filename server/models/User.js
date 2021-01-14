@@ -1,4 +1,3 @@
-
 const {Schema, model, ObjectId} = require("mongoose")
 
 const User = new Schema({
