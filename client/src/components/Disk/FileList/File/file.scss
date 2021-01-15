@@ -1,13 +1,14 @@
 .file{
   margin: 10px 0;
   background-color: white;
-  border-radius: 20px;
+  border-radius: 10px;
   border: solid 2px #40a9ff;
   box-shadow: 3px 4px 10px rgba(9, 109, 217, 0.2);
   display: grid;
   grid-template-columns: 1fr 4fr repeat(4, 1fr);
   padding: 8px;
   align-items: center;
+  cursor: pointer;
   &:hover{
     transform: scale(1.02);
   }

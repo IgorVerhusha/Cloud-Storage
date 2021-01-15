@@ -11,7 +11,7 @@ const Navbar = () => {
     const dispatch = useDispatch()
 
     const onLogout = () => {
-        localStorage.removeItem('token')
+        localStorage.removeItem('tokenCloud')
         dispatch(logout())
     }
 
