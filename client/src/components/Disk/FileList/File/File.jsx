@@ -9,13 +9,15 @@ const File = ({file}) => {
     const currentDir = useSelector(state => state.files.currentDir)
 
     const openDirHandler = () => {
-        dispatch(pushToStack(currentDir))
-        dispatch(setCurrentDir(file._id))
+        if(file.type === 'dir'){
+            dispatch(pushToStack(currentDir))
+            dispatch(setCurrentDir(file._id))
+        }
     }
 
 
     return (
-        <div className='file' onClick={file.type === 'dir' ? () => openDirHandler() : ''}>
+        <div className='file' onClick={() => openDirHandler()}>
             {file.type === 'dir' ?
                 <FolderTwoTone/> : <FileTwoTone/>
             }

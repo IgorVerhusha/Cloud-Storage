@@ -11,7 +11,9 @@
         transform: scale(1.3);
       }
     }
-
+  }
+  &__upload-input{
+    display: none;
   }
 }
 

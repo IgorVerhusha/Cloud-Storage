@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {getFiles} from "../../Redux/actions/file.js";
-import {LeftCircleTwoTone, FolderAddTwoTone} from '@ant-design/icons';
+import {getFiles, uploadFile} from "../../Redux/actions/file.js";
+import {LeftCircleTwoTone, FolderAddTwoTone,FileAddTwoTone} from '@ant-design/icons';
 import {Tooltip} from "antd";
 import "./disk.scss"
 import FileList from "./FileList/FileList.jsx";
@@ -26,7 +26,11 @@ const Disk = () => {
         dispatch(setCurrentDir(backDirId))
     }
 
-    console.log(dirStack)
+    const fileUploadHandler = (event) => {
+const files = [...event.target.files]
+        files.forEach(file=> dispatch(uploadFile(file,currentDir)))
+    }
+
 
     return (
         <div className="disk">
@@ -37,6 +41,12 @@ const Disk = () => {
                 <Tooltip placement="bottom" title={"Создать новую папку"} color={"blue"}>
                     <FolderAddTwoTone style={{cursor: 'pointer', marginLeft: 30}} onClick={() => createDirHandler()}/>
                 </Tooltip>
+                <div className="disk__upload">
+                    <Tooltip placement="bottom" title={"Загрузить файл"} color={"blue"}>
+                    <label htmlFor="disk__upload-input" className="disk__upload-label"><FileAddTwoTone style={{cursor: 'pointer', marginLeft: 30}}/></label>
+                    </Tooltip>
+                    <input onChange={(event)=>fileUploadHandler(event)} type="file" id="disk__upload-input" className="disk__upload-input"/>
+                </div>
             </div>
             <FileList/>
             <Popup/>
