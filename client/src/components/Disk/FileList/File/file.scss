@@ -1,4 +1,4 @@
-.file{
+.file {
   margin: 10px 0;
   background-color: white;
   border-radius: 10px;
@@ -9,18 +9,27 @@
   padding: 8px;
   align-items: center;
   cursor: pointer;
-  &:hover{
+  &:hover {
     transform: scale(1.02);
   }
-  .anticon{
+  .anticon {
     font-size: 32px;
   }
-  &__date{
+  &__date {
     grid-column-start: 5;
     justify-self: center;
   }
-  &__size{
+  &__size {
     grid-column-start: 6;
     justify-self: center;
   }
+&__btn{
+  display: none;
 }
+  &:hover &__btn {
+    grid-column-start: 4;
+    justify-self: center;
+    display: flex;
+  }
+}
+

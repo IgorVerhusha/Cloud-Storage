@@ -53,7 +53,8 @@ const Disk = () => {
     }
 
     return (!dragEnter ?
-            <div className="disk" onDragEnter={dragEnterHandler} onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler}>
+            <div className="disk" onDragEnter={dragEnterHandler} onDragLeave={dragLeaveHandler}
+                 onDragOver={dragEnterHandler}>
                 <div className="disk__btns">
                     <Tooltip placement="bottom" title={"Назад"} color={"blue"}>
                         <LeftCircleTwoTone style={{cursor: 'pointer'}} onClick={() => backClickHandler()}/>
@@ -64,8 +65,8 @@ const Disk = () => {
                     </Tooltip>
                     <div className="disk__upload">
                         <Tooltip placement="bottom" title={"Загрузить файл"} color={"blue"}>
-                            <label htmlFor="disk__upload-input" className="disk__upload-label"><FileAddTwoTone
-                                style={{cursor: 'pointer', marginLeft: 30}}/></label>
+                            <label htmlFor="disk__upload-input" className="disk__upload-label">
+                                <FileAddTwoTone style={{cursor: 'pointer'}}/></label>
                         </Tooltip>
                         <input onChange={(event) => fileUploadHandler(event)} type="file" id="disk__upload-input"
                                className="disk__upload-input"/>
@@ -75,7 +76,8 @@ const Disk = () => {
                 <Popup/>
             </div>
             :
-            <div className="drop-area" onDrop={dropHandler} onDragEnter={dragEnterHandler} onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler}>
+            <div className="drop-area" onDrop={dropHandler} onDragEnter={dragEnterHandler}
+                 onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler}>
                 Перетащите файлы сюда
             </div>
     );
