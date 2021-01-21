@@ -2,17 +2,19 @@ import React from 'react';
 import "./file.scss"
 import {FileTwoTone, FolderTwoTone, SaveTwoTone, DeleteTwoTone} from '@ant-design/icons';
 import {useDispatch, useSelector} from "react-redux";
-import {setCurrentDir, pushToStack} from "../../../../Redux/fileReducer.js";
+import {setCurrentDir, pushToStack, setCurrentDirName} from "../../../../Redux/fileReducer.js";
 import {Tooltip} from "antd";
 import {downloadFile, deleteFile} from "../../../../Redux/actions/file.js";
 
 const File = ({file}) => {
     const dispatch = useDispatch()
     const currentDir = useSelector(state => state.files.currentDir)
+    const currentDirName = useSelector(state => state.files.currentDirName)
 
     const openDirHandler = () => {
         if (file.type === 'dir') {
-            dispatch(pushToStack(currentDir))
+            dispatch(pushToStack({id:currentDir, name:currentDirName}))
+            dispatch(setCurrentDirName(file.name))
             dispatch(setCurrentDir(file._id))
         }
     }
