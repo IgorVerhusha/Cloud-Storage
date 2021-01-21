@@ -4,7 +4,7 @@ import {FileTwoTone, FolderTwoTone, SaveTwoTone, DeleteTwoTone} from '@ant-desig
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentDir, pushToStack} from "../../../../Redux/fileReducer.js";
 import {Tooltip} from "antd";
-import {downloadFile} from "../../../../Redux/actions/file.js";
+import {downloadFile, deleteFile} from "../../../../Redux/actions/file.js";
 
 const File = ({file}) => {
     const dispatch = useDispatch()
@@ -22,6 +22,10 @@ const File = ({file}) => {
         downloadFile(file)
     }
 
+    const deleteClickHandler = (e) => {
+        e.stopPropagation()
+        dispatch(deleteFile(file))
+    }
     return (
         <div className='file' onClick={() => openDirHandler()}>
             {file.type === 'dir' ?
@@ -34,7 +38,7 @@ const File = ({file}) => {
                                                          onClick={(e) => downloadClickHandler(e)}/>}
                 </Tooltip>
                 <Tooltip placement="bottom" title={"Удалить"} color={"#d4380d"}>
-                    <DeleteTwoTone className={"file__delete"} twoToneColor="#d4380d"/>
+                    <DeleteTwoTone className={"file__delete"} twoToneColor="#d4380d" onClick={(e) => deleteClickHandler(e) }/>
                 </Tooltip>
             </div>
             <div className="file__date">{file.date.slice(0, 10)}</div>

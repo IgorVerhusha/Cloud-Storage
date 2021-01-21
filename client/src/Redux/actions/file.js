@@ -1,5 +1,6 @@
 import axios from 'axios'
-import {setFiles, addFile} from "../fileReducer.js";
+import {setFiles, addFile, deleteFileAction} from "../fileReducer.js";
+import {message} from "antd";
 
 export const getFiles = (dirId) => {
     return async dispatch => {
@@ -51,10 +52,10 @@ export const uploadFile = (file, dirId) => {
                 onUploadProgress: progressEvent => {
                     const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
                     console.log('total', totalLength)
-                        if(totalLength){
-                            let progress = Math.round((progressEvent.loaded * 100) / totalLength)
-                            console.log(progress)
-                        }
+                    if (totalLength) {
+                        let progress = Math.round((progressEvent.loaded * 100) / totalLength)
+                        console.log(progress)
+                    }
                 }
             })
             dispatch(addFile(response.data))
@@ -70,7 +71,7 @@ export const downloadFile = async (file) => {
             Authorization: `Bearer ${localStorage.getItem('tokenCloud')}`
         }
     })
-    if(response.status === 200){
+    if (response.status === 200) {
         const blob = await response.blob()
         const downloadUrl = window.URL.createObjectURL(blob)
         const link = document.createElement('a')
@@ -79,5 +80,21 @@ export const downloadFile = async (file) => {
         document.body.appendChild(link)
         link.click()
         link.remove()
+    }
+}
+
+export const deleteFile = (file) => {
+    return async dispatch => {
+        try {
+            const response = await axios.delete(`http://localhost:5000/api/files?id=${file._id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('tokenCloud')}`
+                }
+            })
+            dispatch(deleteFileAction(file._id))
+            message.success(response?.data?.message);
+        } catch (e) {
+            message.error(e?.response?.data?.message);
+        }
     }
 }
