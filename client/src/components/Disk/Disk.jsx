@@ -9,6 +9,7 @@ import Popup from "./Popup.jsx";
 import {setPopupDisplay, setCurrentDir, setCurrentDirName, breadCrumbHandlerAction} from "../../Redux/fileReducer.js";
 import { Breadcrumb } from 'antd';
 import 'antd/dist/antd.css';
+import Uploader from "./FileList/Uploader/Uploader.jsx";
 
 const Disk = () => {
     const dispatch = useDispatch()
@@ -92,6 +93,7 @@ const Disk = () => {
 
                 <FileList/>
                 <Popup/>
+                <Uploader/>
             </div>
             :
             <div className="drop-area" onDrop={dropHandler} onDragEnter={dragEnterHandler}

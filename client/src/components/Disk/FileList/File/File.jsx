@@ -1,6 +1,6 @@
 import React from 'react';
 import "./file.scss"
-import {FileTwoTone, FolderTwoTone, SaveTwoTone, DeleteTwoTone} from '@ant-design/icons';
+import {FileTwoTone, FolderTwoTone, DownloadOutlined, DeleteTwoTone} from '@ant-design/icons';
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentDir, pushToStack, setCurrentDirName} from "../../../../Redux/fileReducer.js";
 import {Tooltip} from "antd";
@@ -31,12 +31,12 @@ const File = ({file}) => {
     return (
         <div className='file' onClick={() => openDirHandler()}>
             {file.type === 'dir' ?
-                <FolderTwoTone/> : <FileTwoTone/>
+                <FolderTwoTone twoToneColor='#fa8c16'/> : <FileTwoTone twoToneColor='#08979c'/>
             }
             <div className="file__name">{file.name}</div>
             <div className={"file__btn"}>
                 <Tooltip placement="bottom" title={"Загрузить файл"} color={"#389e0d"}>
-                    {file.type !== 'dir' && <SaveTwoTone className={"file__download"} twoToneColor="#389e0d"
+                    {file.type !== 'dir' && <DownloadOutlined className={"file__download"} style={{color:"#389e0d"}}
                                                          onClick={(e) => downloadClickHandler(e)}/>}
                 </Tooltip>
                 <Tooltip placement="bottom" title={"Удалить"} color={"#d4380d"}>
