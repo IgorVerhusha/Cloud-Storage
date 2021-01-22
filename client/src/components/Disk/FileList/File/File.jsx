@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setCurrentDir, pushToStack, setCurrentDirName} from "../../../../Redux/fileReducer.js";
 import {Tooltip} from "antd";
 import {downloadFile, deleteFile} from "../../../../Redux/actions/file.js";
+import sizeFormat from "../../../../utils/sizeFormat.js"
 
 const File = ({file}) => {
     const dispatch = useDispatch()
@@ -44,7 +45,7 @@ const File = ({file}) => {
                 </Tooltip>
             </div>
             <div className="file__date">{file.date.slice(0, 10)}</div>
-            <div className="file__size">{file.size}</div>
+            <div className="file__size">{file.type !== 'dir' && sizeFormat(file.size)}</div>
 
         </div>
     );
