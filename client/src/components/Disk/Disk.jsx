@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {getFiles, uploadFile} from "../../Redux/actions/file.js";
 import {LeftCircleTwoTone, FolderAddTwoTone, FileAddTwoTone, HomeOutlined } from '@ant-design/icons';
-import {Tooltip} from "antd";
+import {Tooltip, Select} from "antd";
 import "./disk.scss"
 import FileList from "./FileList/FileList.jsx";
 import Popup from "./Popup.jsx";
@@ -10,17 +10,24 @@ import {setPopupDisplay, setCurrentDir, setCurrentDirName, breadCrumbHandlerActi
 import { Breadcrumb } from 'antd';
 import 'antd/dist/antd.css';
 import Uploader from "./FileList/Uploader/Uploader.jsx";
+const { Option } = Select;
+
 
 const Disk = () => {
+
     const dispatch = useDispatch()
     const currentDir = useSelector(state => state.files.currentDir)
     const currentDirName = useSelector(state => state.files.currentDirName)
     const dirStack = useSelector(state => state.files.dirStack)
+
     const [dragEnter, setDragEnter] = useState(false)
+    const [sort, setSort] = useState('type')
+
+
 
     useEffect(() => {
-        dispatch(getFiles(currentDir))
-    }, [currentDir])
+        dispatch(getFiles(currentDir, sort))
+    }, [currentDir, sort])
 
     const createDirHandler = () => {
         dispatch(setPopupDisplay(true))
@@ -62,7 +69,9 @@ const Disk = () => {
         setDragEnter(false)
     }
 
-    return (!dragEnter ?
+
+    return (
+        !dragEnter ?
             <div className="disk" onDragEnter={dragEnterHandler} onDragLeave={dragLeaveHandler}
                  onDragOver={dragEnterHandler}>
                     <div className="disk__navigation">
@@ -88,6 +97,14 @@ const Disk = () => {
                         </Tooltip>
                         <input onChange={(event) => fileUploadHandler(event)} type="file" id="disk__upload-input"
                                className="disk__upload-input"/>
+                    </div>
+                    <div className="disk__select">
+                        сортировать по:{" "}{" "}
+                    <Select  defaultValue="type" value={sort} style={{ width: 120, fontSize: 18 }} onChange={(e)=>setSort(e)}>
+                        <Option value="type">типу</Option>
+                        <Option value="name">имени</Option>
+                        <Option value="date">дате</Option>
+                    </Select>
                     </div>
                 </div>
 

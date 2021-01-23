@@ -6,13 +6,15 @@ const PUSH_TO_STACK = "PUSH_TO_STACK"
 const DELETE_FILE = "DELETE_FILE"
 const SET_CURRENT_DIR_NAME = "SET_CURRENT_DIR_NAME"
 const BREAD_CRUMB = "BREAD_CRUMB"
+const IS_FETCHING_FILES = "IS_FETCHING_FILES"
 
 const initialState = {
     files: [],
     currentDir: null,
     currentDirName: null,
     popupDisplay: false,
-    dirStack: []
+    dirStack: [],
+    isFetching: false
 }
 
 export const fileReducer = (state = initialState, action) => {
@@ -33,6 +35,8 @@ export const fileReducer = (state = initialState, action) => {
             return {...state, currentDirName: action.payload}
         case BREAD_CRUMB:
             return {...state, dirStack: [...state.dirStack.splice(0, action.payload)]}
+        case IS_FETCHING_FILES:
+            return {...state, isFetching: action.payload}
         default:
             return state
     }
@@ -46,4 +50,5 @@ export const pushToStack = (dir) => ({type: PUSH_TO_STACK, payload: dir})
 export const setCurrentDirName = (dir) => ({type: SET_CURRENT_DIR_NAME, payload: dir})
 export const deleteFileAction = (dirId) => ({type: DELETE_FILE, payload: dirId})
 export const breadCrumbHandlerAction = (index) => ({type: BREAD_CRUMB, payload:index})
+export const setIsFetchingFiles = (payload) => ({type: IS_FETCHING_FILES, payload})
 

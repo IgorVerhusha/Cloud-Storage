@@ -30,7 +30,22 @@ class FileController {
 
     async getFiles(req, res) {
         try {
-            const files = await File.find({user: req.user.id, parent: req.query.parent})
+            const {sort} = req.query
+            let files
+            switch (sort) {
+                case 'name':
+                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({name:1})
+                    break
+                case 'type':
+                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({type:1})
+                    break
+                case 'date':
+                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({date:1})
+                    break
+                default:
+                    files = await File.find({user: req.user.id, parent: req.query.parent})
+                    break
+            }
             return res.json(files)
         } catch (e) {
             console.log(e)
@@ -62,7 +77,7 @@ class FileController {
             file.mv(path)
             const type = file.name.split('.').pop()
             let filePath = file.name
-            if(parent){
+            if (parent) {
                 filePath = parent.path + "\\" + file.name
             }
             const dbFile = new File({
@@ -89,26 +104,26 @@ class FileController {
         try {
             const file = await File.findOne({_id: req.query.id, user: req.user.id})
             const path = config.get('filePath') + '\\' + req.user.id + '\\' + file.path + '\\' + file.name
-            if(fs.existsSync(path)) {
+            if (fs.existsSync(path)) {
                 return res.download(path, file.name)
             }
             return res.status(400).json({message: "Download error"})
-                } catch (e) {
+        } catch (e) {
             console.log(e)
             res.status(500).json({message: "Download error"})
         }
     }
 
-    async deleteFile(req,res) {
-        try{
+    async deleteFile(req, res) {
+        try {
             const file = await File.findOne({_id: req.query.id, user: req.user.id})
-            if(!file){
+            if (!file) {
                 return res.status(400).json({message: "Файл не найден!"})
             }
             fileService.deleteFile(file)
             await file.remove()
             return res.json({message: "Файл успешно удалён!"})
-        } catch(e){
+        } catch (e) {
             console.log(e)
             return res.status(400).json({message: "Папка должна быть пуста!"})
         }

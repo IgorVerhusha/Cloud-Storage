@@ -1,12 +1,24 @@
 import axios from 'axios'
-import {setFiles, addFile, deleteFileAction} from "../fileReducer.js";
+import {setFiles, addFile, deleteFileAction, setIsFetchingFiles} from "../fileReducer.js";
 import {message} from "antd";
 import {showUploader, addUploadFile, changeUploadFile} from "../uploadReducer.js";
 
-export const getFiles = (dirId) => {
+
+export const getFiles = (dirId, sort) => {
     return async dispatch => {
+       // dispatch(setIsFetchingFiles(true))
         try {
-            const response = await axios.get(`http://localhost:5000/api/files${dirId ? '?parent=' + dirId : ''}`, {
+            let url = `http://localhost:5000/api/files`
+            if(dirId){
+                url = `http://localhost:5000/api/files?parent=${dirId}`
+            }
+            if(sort){
+                url = `http://localhost:5000/api/files?sort=${sort}`
+            }
+            if(dirId && sort){
+                url = `http://localhost:5000/api/files?parent=${dirId}&sort=${sort}`
+            }
+            const response = await axios.get(url, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('tokenCloud')}`
                 }
@@ -15,6 +27,7 @@ export const getFiles = (dirId) => {
         } catch (e) {
             alert(e.response.data.message)
         }
+       // dispatch(setIsFetchingFiles(false))
     }
 }
 
