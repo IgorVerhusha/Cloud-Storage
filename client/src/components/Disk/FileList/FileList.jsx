@@ -10,8 +10,12 @@ const FileList = () => {
     const files = useSelector(state => state.files.files)
     const isFetching = useSelector(state => state.files.isFetching)
 
-    return (
+    if (files.length===0){
+        return <div className="file-list__empty">Файлы не найдены. <br/>Вы можете создать папку или добавить файл, нажав кнопку либо перетянуть его сюда.</div>
 
+    }
+
+    return (
         <div className="file-list">
             {isFetching ? <Spinner/> :<>
                 <div className="file-list__header">

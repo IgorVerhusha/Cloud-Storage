@@ -1,12 +1,12 @@
 import React from 'react';
 import "./file.scss"
-import {FileTwoTone, FolderTwoTone, DownloadOutlined, DeleteTwoTone} from '@ant-design/icons';
+import {FileTwoTone, FolderTwoTone, DownloadOutlined, DeleteTwoTone, ExclamationCircleOutlined} from '@ant-design/icons';
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentDir, pushToStack, setCurrentDirName} from "../../../../Redux/fileReducer.js";
-import {Tooltip} from "antd";
+import {Tooltip, Modal} from "antd";
 import {downloadFile, deleteFile} from "../../../../Redux/actions/file.js";
 import sizeFormat from "../../../../utils/sizeFormat.js"
-
+const { confirm } = Modal;
 const File = ({file}) => {
     const dispatch = useDispatch()
     const currentDir = useSelector(state => state.files.currentDir)
@@ -26,8 +26,26 @@ const File = ({file}) => {
     }
 
     const deleteClickHandler = (e) => {
+
         e.stopPropagation()
-        dispatch(deleteFile(file))
+        if (file.type === 'dir') {
+            confirm({
+                title: 'Вы действительно хотите удалить папку?',
+                icon: <ExclamationCircleOutlined/>,
+                content: 'Всё содержимое папки будет удалено.',
+                cancelText: 'Отмена',
+                okText: 'Удалить',
+                okType: 'danger',
+                onOk() {
+                    dispatch(deleteFile(file))
+                },
+                onCancel() {
+                },
+            });
+        } else {
+            dispatch(deleteFile(file))
+        }
+
     }
     return (
         <div className='file' onClick={() => openDirHandler()}>
@@ -36,7 +54,7 @@ const File = ({file}) => {
             }
             <div className="file__name">{file.name}</div>
             <div className={"file__btn"}>
-                <Tooltip placement="bottom" title={"Загрузить файл"} color={"#389e0d"}>
+                <Tooltip placement="bottom" title={"Скачать файл"} color={"#389e0d"}>
                     {file.type !== 'dir' && <DownloadOutlined className={"file__download"} style={{color:"#389e0d"}}
                                                          onClick={(e) => downloadClickHandler(e)}/>}
                 </Tooltip>

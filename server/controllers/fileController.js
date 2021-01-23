@@ -3,6 +3,7 @@ const config = require('config')
 const User = require('../models/User')
 const File = require('../models/File')
 const fs = require('fs')
+const fsx = require('fs-extra')
 
 class FileController {
     async createDir(req, res) {
@@ -34,13 +35,13 @@ class FileController {
             let files
             switch (sort) {
                 case 'name':
-                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({name:1})
+                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({name: 1})
                     break
                 case 'type':
-                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({type:1})
+                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({type: 1})
                     break
                 case 'date':
-                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({date:1})
+                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({date: 1})
                     break
                 default:
                     files = await File.find({user: req.user.id, parent: req.query.parent})
@@ -103,7 +104,14 @@ class FileController {
     async downloadFile(req, res) {
         try {
             const file = await File.findOne({_id: req.query.id, user: req.user.id})
-            const path = config.get('filePath') + '\\' + req.user.id + '\\' + file.path + '\\' + file.name
+            const parent = await File.findOne({user: req.user.id, _id: req.body.parent})
+            const user = await User.findOne({_id: req.user.id})
+            let path;
+            if (parent) {
+                path = `${config.get(`filePath`)}\\${user._id}\\${parent.path}\\${file.name}`
+            } else {
+                path = `${config.get(`filePath`)}\\${user._id}\\${file.name}`
+            }
             if (fs.existsSync(path)) {
                 return res.download(path, file.name)
             }
@@ -117,15 +125,30 @@ class FileController {
     async deleteFile(req, res) {
         try {
             const file = await File.findOne({_id: req.query.id, user: req.user.id})
+            // нужно дописать функцию, удаляющую не только наличием parent
+                let files = await File.find({parent: req.query.id})
             if (!file) {
                 return res.status(400).json({message: "Файл не найден!"})
             }
             fileService.deleteFile(file)
             await file.remove()
+            await files.map(item=>item.remove())
             return res.json({message: "Файл успешно удалён!"})
         } catch (e) {
             console.log(e)
-            return res.status(400).json({message: "Папка должна быть пуста!"})
+            return res.status(400).json({message: "Delete error!"})
+        }
+    }
+
+    async searchFile(req, res) {
+        try {
+            const searchName = req.query.search
+            let files = await File.find({user: req.user.id})
+            files = files.filter(file=> file.name.toUpperCase().includes(searchName.toUpperCase()))
+            return res.json(files)
+        } catch (e) {
+            console.log(e)
+            return res.status(400).json({message: "Search error!"})
         }
     }
 }

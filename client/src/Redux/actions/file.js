@@ -6,7 +6,7 @@ import {showUploader, addUploadFile, changeUploadFile} from "../uploadReducer.js
 
 export const getFiles = (dirId, sort) => {
     return async dispatch => {
-       // dispatch(setIsFetchingFiles(true))
+        dispatch(setIsFetchingFiles(true))
         try {
             let url = `http://localhost:5000/api/files`
             if(dirId){
@@ -27,7 +27,7 @@ export const getFiles = (dirId, sort) => {
         } catch (e) {
             alert(e.response.data.message)
         }
-       // dispatch(setIsFetchingFiles(false))
+        dispatch(setIsFetchingFiles(false))
     }
 }
 
@@ -111,6 +111,24 @@ export const deleteFile = (file) => {
             message.success(response?.data?.message);
         } catch (e) {
             message.error(e?.response?.data?.message);
+        }
+    }
+}
+
+export const searchFile = (search) => {
+    return async dispatch => {
+        try {
+            dispatch(setIsFetchingFiles(true))
+            const response = await axios.get(`http://localhost:5000/api/files/search?search=${search}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('tokenCloud')}`
+                }
+            })
+            dispatch(setFiles(response.data))
+        } catch (e) {
+            message.error(e?.response?.data?.message);
+        } finally {
+            dispatch(setIsFetchingFiles(false))
         }
     }
 }

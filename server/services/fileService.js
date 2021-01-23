@@ -1,6 +1,7 @@
 const fs = require('fs')
 const File = require('../models/File')
 const config = require('config')
+const fsx = require('fs-extra')
 
 class FileService {
     createDir(file) {
@@ -22,7 +23,7 @@ class FileService {
     deleteFile(file) {
         const path = this.getPath(file)
         if(file.type === 'dir') {
-            fs.rmdirSync(path)
+            fsx.remove(path)
         } else {
             fs.unlinkSync(path)
         }
