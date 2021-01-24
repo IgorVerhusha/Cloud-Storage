@@ -1,12 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {getFiles, uploadFile} from "../../Redux/actions/file.js";
-import {LeftCircleTwoTone, FolderAddTwoTone, FileAddTwoTone, HomeOutlined } from '@ant-design/icons';
+import {LeftCircleTwoTone, FolderAddTwoTone, FileAddTwoTone, HomeOutlined, AppstoreOutlined, BarsOutlined } from '@ant-design/icons';
 import {Tooltip, Select} from "antd";
 import "./disk.scss"
 import FileList from "./FileList/FileList.jsx";
 import Popup from "./Popup.jsx";
-import {setPopupDisplay, setCurrentDir, setCurrentDirName, breadCrumbHandlerAction} from "../../Redux/fileReducer.js";
+import {
+    setPopupDisplay,
+    setCurrentDir,
+    setCurrentDirName,
+    breadCrumbHandlerAction,
+    setFilesView
+} from "../../Redux/fileReducer.js";
 import { Breadcrumb } from 'antd';
 import 'antd/dist/antd.css';
 import Uploader from "./FileList/Uploader/Uploader.jsx";
@@ -19,7 +25,6 @@ const Disk = () => {
     const currentDir = useSelector(state => state.files.currentDir)
     const currentDirName = useSelector(state => state.files.currentDirName)
     const dirStack = useSelector(state => state.files.dirStack)
-
     const [dragEnter, setDragEnter] = useState(false)
     const [sort, setSort] = useState('type')
 
@@ -106,8 +111,13 @@ const Disk = () => {
                         <Option value="date">дате</Option>
                     </Select>
                     </div>
+                    <Tooltip placement="bottom" title={"Плитка"}>
+                    <AppstoreOutlined style={{marginLeft:12,cursor: 'pointer'}} onClick={()=>dispatch(setFilesView("plate"))}/>
+                    </Tooltip>
+                    <Tooltip placement="bottom" title={"Список"}>
+                    <BarsOutlined style={{marginLeft:12,cursor: 'pointer'}} onClick={()=>dispatch(setFilesView("list"))}/>
+                    </Tooltip>
                 </div>
-
                 <FileList/>
                 <Popup/>
                 <Uploader/>

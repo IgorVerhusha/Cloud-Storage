@@ -104,14 +104,7 @@ class FileController {
     async downloadFile(req, res) {
         try {
             const file = await File.findOne({_id: req.query.id, user: req.user.id})
-            const parent = await File.findOne({user: req.user.id, _id: req.body.parent})
-            const user = await User.findOne({_id: req.user.id})
-            let path;
-            if (parent) {
-                path = `${config.get(`filePath`)}\\${user._id}\\${parent.path}\\${file.name}`
-            } else {
-                path = `${config.get(`filePath`)}\\${user._id}\\${file.name}`
-            }
+            const path = fileService.getPath(file)
             if (fs.existsSync(path)) {
                 return res.download(path, file.name)
             }
@@ -126,13 +119,13 @@ class FileController {
         try {
             const file = await File.findOne({_id: req.query.id, user: req.user.id})
             // нужно дописать функцию, удаляющую не только наличием parent
-                let files = await File.find({parent: req.query.id})
+            let files = await File.find({parent: req.query.id})
             if (!file) {
                 return res.status(400).json({message: "Файл не найден!"})
             }
             fileService.deleteFile(file)
             await file.remove()
-            await files.map(item=>item.remove())
+            await files.map(item => item.remove())
             return res.json({message: "Файл успешно удалён!"})
         } catch (e) {
             console.log(e)
@@ -144,7 +137,7 @@ class FileController {
         try {
             const searchName = req.query.search
             let files = await File.find({user: req.user.id})
-            files = files.filter(file=> file.name.toUpperCase().includes(searchName.toUpperCase()))
+            files = files.filter(file => file.name.toUpperCase().includes(searchName.toUpperCase()))
             return res.json(files)
         } catch (e) {
             console.log(e)
