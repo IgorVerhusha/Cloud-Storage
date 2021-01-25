@@ -41,7 +41,7 @@ const Navbar = () => {
             <div className="container">
                 <CloudTwoTone style={{fontSize: 38}}/>
                 <div className="navbar__header">CLOUD STORAGE</div>
-                {isAuth && <Search placeholder="input search text" allowClear value={searchName}
+                {isAuth && <Search placeholder="поиск" allowClear value={searchName}
                                    onChange={e => searchNameHandler(e)} enterButton
                                    style={{width: 220, marginLeft: 40}}/>}
                 {!isAuth && <div className="navbar__login"><NavLink to="/login">Войти</NavLink></div>}

@@ -71,6 +71,7 @@ const File = ({file}) => {
     }
     if(filesView==='plate'){
         return (
+            <Tooltip placement="bottom" title={file.type === 'dir' ? `Дата: ${file.date.slice(0, 10)}`: `Размер: ${sizeFormat(file.size)} Дата: ${file.date.slice(0, 10)}`} >
             <div className='file-plate' onClick={() => openDirHandler()}>
                 <div className="file-plate__icon">
                 {file.type === 'dir' ?
@@ -89,6 +90,7 @@ const File = ({file}) => {
 
                 </div>
             </div>
+            </Tooltip>
         );
     }
 };

@@ -2,5 +2,6 @@
   "serverPort": 5000,
   "dbUrl": "mongodb+srv://IgorVerhusha:REpublic18@cloud.ia9np.mongodb.net/cloud?retryWrites=true&w=majority",
   "secretKey": "this-is-a-super-secret-key",
-  "filePath": "D:\\education\\web\\Ulbi TV\\Cloud Storage\\server\\files"
+  "filePath": "D:\\education\\web\\Ulbi TV\\Cloud Storage\\server\\files",
+  "staticPath": "D:\\education\\web\\Ulbi TV\\Cloud Storage\\server\\static"
 }
