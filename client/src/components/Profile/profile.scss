@@ -1,0 +1,22 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  padding: 50px;
+  background-color: white;
+  position: relative;
+  box-shadow: 0px 0px 25px rgba(134, 142, 146, 0.5);
+  border-radius: 10px;
+  &__avatar-btns{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50px;
+    right: 50px;
+  }
+  &__upload-input {
+    display: none;
+  }
+}
