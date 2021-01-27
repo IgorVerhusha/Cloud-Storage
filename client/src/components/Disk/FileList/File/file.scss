@@ -53,11 +53,17 @@
   margin: 20px;
   font-size: 14px;
   position: relative;
+
   &:hover {
     transform: scale(1.02);
   }
 &__name{
-  text-align: center;
+  width: 100%;
+ text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+
 }
   &__icon {
     padding: 3px;
